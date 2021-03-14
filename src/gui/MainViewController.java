@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
@@ -38,7 +39,11 @@ public class MainViewController implements Initializable {
 	
 	@FXML
 	public void onMenuItemDepartamentosAction() {
-		loadView2("/gui/DepartamentList.fxml");
+		loadView("/gui/DepartamentList.fxml", 
+				(DepartmentListController controller) -> {
+					controller.setDepartmentService(new DepartmentService());
+					controller.updateTableView();
+				});
 	}
 	
 	@FXML
@@ -48,7 +53,7 @@ public class MainViewController implements Initializable {
 	
 	@FXML
 	public void onMenuItemSobreAction() {
-		loadView("/gui/About.fxml");
+		loadView("/gui/About.fxml", x -> {});
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class MainViewController implements Initializable {
 
 	}
 	
-	private synchronized void loadView(String absolutePath) {	
+	private synchronized <T> void loadView(String absolutePath, Consumer<T> initAction) {	
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absolutePath));
 			VBox newVBox = loader.load();
@@ -78,43 +83,14 @@ public class MainViewController implements Initializable {
 			//Adiciona a tela de SOBRE
 			mainVbox.getChildren().addAll(newVBox.getChildren());
 			
-		} 
-		catch(IOException ioe) {
-			Alerts.showAlert("IOException", "Arjios: Error loader view", ioe.getMessage(), AlertType.ERROR);
-		}
-	}
-	
-	private synchronized void loadView2(String absolutePath) {	
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absolutePath));
-			VBox newVBox = loader.load();
-			// Pega referencia do Scene Principal 
-			Scene mainScene = Main.getMainScene();
-			
-			// Guarda referencia do Content filho na variavel mainVBox 
-			VBox mainVbox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
-			//Guarda children VBox na variavel mainMenu
-			Node mainMenu = mainVbox.getChildren().get(0);
-			
-			//Limpa tela abaixo do Menu
-			mainVbox.getChildren().clear();
-			
-			//Adiciona o Menu
-			mainVbox.getChildren().add(mainMenu);
-			
-			//Adiciona a tela de SOBRE
-			mainVbox.getChildren().addAll(newVBox.getChildren());
-			
-			DepartmentListController controller = loader.getController();
-			controller.setDepartmentService(new DepartmentService());
-			controller.updateTableView();
+			T controller = loader.getController();
+			initAction.accept(controller);
 			
 		} 
 		catch(IOException ioe) {
 			Alerts.showAlert("IOException", "Arjios: Error loader view", ioe.getMessage(), AlertType.ERROR);
 		}
+
 	}
 
-	
 }
