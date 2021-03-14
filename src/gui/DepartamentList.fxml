@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="325.0" prefWidth="483.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<VBox prefHeight="325.0" prefWidth="483.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentListController">
    <children>
       <Label prefHeight="19.0" prefWidth="240.0" text="Arjios - Cadastro Departamentos">
          <font>
@@ -22,13 +21,16 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" text="Novo" />
+          <Button fx:id="btNew" mnemonicParsing="false" onAction="#onBtNewAction" text="Novo" />
         </items>
       </ToolBar>
-      <TableView prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="tableViewDepartment" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Codigo" />
-          <TableColumn prefWidth="75.0" text="Nome" />
+            <TableColumn fx:id="tableColumnIdCompany" prefWidth="75.0" text="Empresa" />
+          <TableColumn fx:id="tableColumnId" prefWidth="75.0" text="Codigo" />
+          <TableColumn fx:id="tableColumnName" prefWidth="75.0" text="Nome" />
+            <TableColumn fx:id="tableColumnType" prefWidth="75.0" text="Tipo" />
+            <TableColumn fx:id="tableColumnCostCenter" prefWidth="120.0" text="Centro de Custo" />
         </columns>
       </TableView>
    </children>
