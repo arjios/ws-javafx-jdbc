@@ -17,8 +17,11 @@ public class Department implements Serializable {
 	}
 
 	public Department(Integer idCompany, Integer id, Integer type, String name, Integer costCenter) {
+		this.idCompany = idCompany;
 		this.id = id;
+		this.type = type;
 		this.name = name;
+		this.costCenter = costCenter;
 	}
 
 	public Integer getId() {
@@ -53,7 +56,7 @@ public class Department implements Serializable {
 		this.name = name;
 	}
 	
-	public Integer getCostCentre() {
+	public Integer getCostCenter() {
 		return costCenter;
 	}
 
